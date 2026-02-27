@@ -83,7 +83,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      apiGet<{ success: boolean; data: { DashboardStats } }>(
+      apiGet<{ success: boolean; data: DashboardStats }>(
         "/analytics/dashboard",
       ),
       apiGet<{ success: boolean; data: { chart: RevenueChartPoint[] } }>(
