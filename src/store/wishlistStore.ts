@@ -49,7 +49,6 @@ export const useWishlistStore = create<WishlistStore>((set, get) => ({
         itemCount: itemCount ?? 0,
       });
     } catch {
-      // Not authenticated or no wishlist yet — that's fine
       set({ items: [], productIds: new Set(), itemCount: 0 });
     } finally {
       set({ isLoading: false });
@@ -57,8 +56,9 @@ export const useWishlistStore = create<WishlistStore>((set, get) => ({
   },
 
   toggleItem: async (productId: string) => {
-    // Optimistic update
+    // Optimistic update — update UI immediately
     const prevIds = get().productIds;
+    const prevItems = get().items;
     const isIn = prevIds.has(productId);
     const nextIds = new Set(prevIds);
     isIn ? nextIds.delete(productId) : nextIds.add(productId);
@@ -73,14 +73,38 @@ export const useWishlistStore = create<WishlistStore>((set, get) => ({
           itemCount: number;
         };
       }>(`/wishlist/${productId}`);
+
       const { action, productIds, itemCount } = res.data;
+
+      // ✅ FIX: Set productIds from API response first, THEN fetch full items
+      // Don't let fetchWishlist race against this set()
       set({ productIds: new Set(productIds), itemCount });
-      // Refetch to hydrate full product objects for wishlist page
-      get().fetchWishlist();
+
+      if (action === "added") {
+        // Fetch full item data for the wishlist page (non-blocking)
+        // Use a separate async call that won't overwrite productIds optimistically
+        apiGet<{
+          success: boolean;
+          data: {
+            items: WishlistItem[];
+            productIds: string[];
+            itemCount: number;
+          };
+        }>("/wishlist")
+          .then((r) => {
+            // ✅ Only update items + itemCount, NOT productIds (already correct from API)
+            set({ items: r.data.items ?? [] });
+          })
+          .catch(() => {});
+      } else {
+        // For removal, update items list immediately without fetching
+        set({ items: prevItems.filter((i) => i.productId !== productId) });
+      }
+
       return action;
     } catch {
-      // Revert
-      set({ productIds: prevIds, itemCount: prevIds.size });
+      // Revert optimistic update on failure
+      set({ productIds: prevIds, itemCount: prevIds.size, items: prevItems });
       return isIn ? "removed" : "added";
     }
   },

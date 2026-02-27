@@ -1,13 +1,11 @@
-//frontend/src/components/shared/drag-drop-media-uploader.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import {
   Loader2,
   Trash2,
   GripVertical,
   Upload,
-  Image as ImageIcon,
   Video,
   Plus,
   X,
@@ -45,6 +43,12 @@ export function DragDropMediaUploader({
   helperText,
   showPreview = true,
 }: DragDropMediaUploaderProps) {
+  // ✅ FIX: useId() generates a unique ID per component instance
+  // Previously all uploaders shared the same `id="file-upload"` so clicking
+  // the label in uploader #2 triggered uploader #1's hidden input
+  const uid = useId();
+  const inputId = `file-upload-${uid}`;
+
   const [uploading, setUploading] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [urlInput, setUrlInput] = useState("");
@@ -62,7 +66,6 @@ export function DragDropMediaUploader({
     try {
       const formData = new FormData();
       formData.append("folder", folder);
-
       Array.from(files).forEach((file) => {
         formData.append("images", file);
       });
@@ -88,7 +91,6 @@ export function DragDropMediaUploader({
   const handleUrlAdd = () => {
     if (!urlInput.trim()) return;
 
-    // Detect if URL is video
     const isVideo =
       /\.(mp4|webm|ogg|mov)$/i.test(urlInput) ||
       urlInput.includes("youtube.com") ||
@@ -107,51 +109,35 @@ export function DragDropMediaUploader({
 
   const handleRemove = async (index: number) => {
     const item = value[index];
-
-    // Delete from Cloudinary if it has a publicId
     if (item.publicId) {
       try {
-        // Now apiDelete supports body parameter
         await apiDelete("/upload", { publicId: item.publicId });
       } catch (err) {
         console.error("Failed to delete from Cloudinary:", err);
       }
     }
-
     onChange(value.filter((_, i) => i !== index));
     toast("Item removed", "success");
   };
 
-  // Drag and drop reordering
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
+  const handleDragStart = (index: number) => setDraggedIndex(index);
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     if (draggedIndex === null || draggedIndex === index) return;
-
     const newItems = [...value];
     const draggedItem = newItems[draggedIndex];
-
-    // Remove dragged item
     newItems.splice(draggedIndex, 1);
-
-    // Insert at new position
     newItems.splice(index, 0, draggedItem);
-
     onChange(newItems);
     setDraggedIndex(index);
   };
 
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-  };
+  const handleDragEnd = () => setDraggedIndex(null);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
-    handleFileUpload(files);
+    handleFileUpload(e.dataTransfer.files);
   };
 
   const acceptTypes =
@@ -184,9 +170,10 @@ export function DragDropMediaUploader({
             : "border-gray-300 hover:border-brand-400 hover:bg-gray-50"
         }`}
       >
+        {/* ✅ FIX: id and htmlFor now use the unique inputId */}
         <input
           type="file"
-          id="file-upload"
+          id={inputId}
           multiple={maxFiles > 1}
           accept={acceptTypes}
           onChange={(e) => handleFileUpload(e.target.files)}
@@ -195,7 +182,7 @@ export function DragDropMediaUploader({
         />
 
         <label
-          htmlFor="file-upload"
+          htmlFor={inputId}
           className={`cursor-pointer ${uploading || value.length >= maxFiles ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {uploading ? (
@@ -256,24 +243,20 @@ export function DragDropMediaUploader({
                   : "border-gray-200 hover:border-brand-300"
               }`}
             >
-              {/* Drag Handle */}
               <div className="absolute top-2 left-2 z-10 w-6 h-6 bg-black/50 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <GripVertical className="w-4 h-4 text-white" />
               </div>
 
-              {/* Main Badge */}
               {index === 0 && (
                 <span className="absolute top-2 left-10 bg-brand-600 text-white text-[10px] px-2 py-0.5 rounded font-medium z-10">
                   Main
                 </span>
               )}
 
-              {/* Media Type Badge */}
               <span className="absolute top-2 right-10 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded font-medium z-10">
                 {item.type === "video" ? "Video" : "Image"}
               </span>
 
-              {/* Remove Button */}
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
@@ -282,7 +265,6 @@ export function DragDropMediaUploader({
                 <X className="w-3 h-3" />
               </button>
 
-              {/* Preview */}
               {item.type === "video" ? (
                 <div className="w-full h-full bg-gray-900 flex items-center justify-center">
                   <Video className="w-8 h-8 text-gray-400" />
