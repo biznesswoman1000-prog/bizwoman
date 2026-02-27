@@ -32,7 +32,7 @@ export interface LoginPayload {
 export interface RegisterPayload {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
 }
 
@@ -200,6 +200,7 @@ export interface OrderShippingAddress {
   fullName?: string;
   firstName?: string;
   lastName?: string;
+  address?: string;
   addressLine1?: string;
   addressLine2?: string;
   city?: string;
