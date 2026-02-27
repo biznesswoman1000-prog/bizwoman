@@ -11,6 +11,7 @@ import {
   EmptyState,
 } from "@/components/shared/loading-spinner";
 import { generateSlug } from "@/lib/utils";
+import Image from "next/image";
 
 export default function AdminBrandsPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -245,10 +246,12 @@ export default function AdminBrandsPage() {
                 >
                   <td className="px-4 py-3">
                     {b.logo ? (
-                      <img
+                      <Image
                         src={b.logo}
                         alt={b.name}
                         className="w-9 h-9 rounded-lg object-contain border border-gray-100"
+                        width={36}
+                        height={36}
                       />
                     ) : (
                       <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500">

@@ -8,6 +8,7 @@ import {
   TableRowSkeleton,
   EmptyState,
 } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 interface InventoryItem {
   id: string;
@@ -153,13 +154,15 @@ export default function AdminInventoryPage() {
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <img
+                        <Image
                           src={
                             item.images?.[0] ||
                             "/images/placeholder-product.png"
                           }
                           alt={item.name}
                           className="w-9 h-9 rounded-lg object-cover border border-gray-100 shrink-0"
+                          width={36}
+                          height={36}
                         />
                         <span className="font-medium text-gray-900 line-clamp-1">
                           {item.name}

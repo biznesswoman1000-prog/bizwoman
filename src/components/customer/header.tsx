@@ -20,6 +20,7 @@ import { useWishlistStore } from "@/store/wishlistStore";
 import { useAuthStore } from "@/store/authStore";
 import { apiGet } from "@/lib/api";
 import { Category, Product } from "@/types";
+import Image from "next/image";
 
 // ─── types ────────────────────────────────────────────────────
 interface SiteSettings {
@@ -103,9 +104,11 @@ function SearchDropdown({
                 }}
                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors text-left"
               >
-                <img
+                <Image
                   src={getProductImage(product.images)}
                   alt={product.name}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0"
                 />
                 <div className="flex-1 min-w-0">
@@ -307,10 +310,12 @@ export function Header() {
               {/* Logo */}
               <Link href="/" className="shrink-0">
                 {settings.logo ? (
-                  <img
+                  <Image
                     src={settings.logo}
                     alt={siteName}
                     className="h-8 lg:h-10 w-auto object-contain"
+                    width={120}
+                    height={32}
                   />
                 ) : (
                   <span className="font-display text-xl lg:text-2xl font-bold text-brand-700 tracking-tight">
@@ -437,10 +442,12 @@ export function Header() {
                     className="hidden lg:flex items-center gap-2 pl-2 pr-3.5 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-700 hover:bg-gray-50 transition-colors"
                   >
                     {user.image ? (
-                      <img
+                      <Image
                         src={user.image}
                         alt={user.name}
                         className="w-6 h-6 rounded-full object-cover ring-2 ring-brand-100"
+                        width={24}
+                        height={24}
                       />
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center">

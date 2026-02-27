@@ -8,6 +8,7 @@ import { useCart } from "@/hooks/useCart";
 import { formatPrice, getProductImage, cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { ProductCardSkeleton } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 export default function WishlistPage() {
   const {
@@ -138,11 +139,13 @@ export default function WishlistPage() {
               {/* Image */}
               <div className="relative aspect-square bg-gray-50 overflow-hidden">
                 <Link href={`/products/${product.slug}`}>
-                  <img
+                  <Image
                     src={getProductImage(product.images)}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    width={500}
+                    height={500}
                   />
                 </Link>
 

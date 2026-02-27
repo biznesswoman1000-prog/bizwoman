@@ -7,6 +7,7 @@ import { apiGet, apiPut, getApiError } from "@/lib/api";
 import { useToast } from "@/store/uiStore";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { DragDropMediaUploader } from "@/components/shared/drag-drop-media-uploader";
+import Image from "next/image";
 
 interface MediaItem {
   url: string;
@@ -690,10 +691,12 @@ function HeroPreview({
             <p className="text-sm">Video: {media.url}</p>
           </div>
         ) : media?.url ? (
-          <img
+          <Image
             src={media.url}
             alt="Preview"
             className="w-full h-full object-cover"
+            width={1200}
+            height={800}
           />
         ) : (
           <div className="w-full h-full bg-gray-700" />
@@ -724,10 +727,12 @@ function HeroPreview({
             className="relative rounded-lg overflow-hidden h-full bg-gray-800"
           >
             {banner.media[0]?.url && (
-              <img
+              <Image
                 src={banner.media[0].url}
                 alt="Banner"
                 className="w-full h-full object-cover"
+                width={600}
+                height={400}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />

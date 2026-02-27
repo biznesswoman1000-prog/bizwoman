@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, Clock, MessageSquare } from "lucide-react";
 import { apiGet, apiPost, getApiError } from "@/lib/api";
 import { useToast } from "@/store/uiStore";
 import { PageLoader } from "@/components/shared/loading-spinner";
+import Link from "next/link";
 
 interface ContactSettings {
   contactTitle?: string;
@@ -83,12 +84,12 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Email</p>
-                      <a
+                      <Link
                         href={`mailto:${settings.contactEmail}`}
                         className="text-gray-900 hover:text-brand-600 font-medium"
                       >
                         {settings.contactEmail}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -100,12 +101,12 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Phone</p>
-                      <a
+                      <Link
                         href={`tel:${settings.contactPhone}`}
                         className="text-gray-900 hover:text-brand-600 font-medium"
                       >
                         {settings.contactPhone}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -117,13 +118,13 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">WhatsApp</p>
-                      <a
+                      <Link
                         href={`https://wa.me/${settings.contactWhatsapp.replace(/[^0-9]/g, "")}`}
                         target="_blank"
                         className="text-gray-900 hover:text-green-600 font-medium"
                       >
                         {settings.contactWhatsapp}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}

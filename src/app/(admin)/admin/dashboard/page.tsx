@@ -25,6 +25,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import Link from "next/link";
 
 function StatCard({
   title,
@@ -204,12 +205,12 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-orange-900">
                     {stats.inventory.lowStock} low stock items
                   </p>
-                  <a
+                  <Link
                     href="/admin/inventory"
                     className="text-xs text-orange-600 hover:underline"
                   >
                     Review inventory →
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
@@ -220,12 +221,12 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-blue-900">
                     {stats.pending.quotations} pending quotations
                   </p>
-                  <a
+                  <Link
                     href="/admin/quotations"
                     className="text-xs text-blue-600 hover:underline"
                   >
                     View quotations →
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
@@ -236,12 +237,12 @@ export default function AdminDashboardPage() {
                   <p className="text-sm font-semibold text-purple-900">
                     {stats.pending.consultations} pending consultations
                   </p>
-                  <a
+                  <Link
                     href="/admin/consultations"
                     className="text-xs text-purple-600 hover:underline"
                   >
                     View consultations →
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}

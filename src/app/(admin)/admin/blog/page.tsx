@@ -12,6 +12,7 @@ import {
   TableRowSkeleton,
   EmptyState,
 } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 const statusColors: Record<string, string> = {
   PUBLISHED: "bg-green-100 text-green-700",
@@ -135,10 +136,12 @@ export default function AdminBlogPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {p.featuredImage && (
-                        <img
+                        <Image
                           src={p.featuredImage}
                           alt={p.title}
                           className="w-8 h-8 rounded-lg object-cover shrink-0"
+                          width={32}
+                          height={32}
                         />
                       )}
                       <span className="font-medium text-gray-900 line-clamp-1 max-w-xs">

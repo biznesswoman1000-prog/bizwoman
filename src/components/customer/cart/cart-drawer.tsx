@@ -8,6 +8,7 @@ import {
   LoadingSpinner,
   EmptyState,
 } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 export function CartDrawer() {
   const {
@@ -94,10 +95,12 @@ export function CartDrawer() {
                     onClick={closeCart}
                     className="shrink-0"
                   >
-                    <img
+                    <Image
                       src={getProductImage(item.product.images)}
                       alt={item.product.name}
                       className="w-20 h-20 rounded-xl object-cover border border-gray-100"
+                      width={80}
+                      height={80}
                     />
                   </Link>
 

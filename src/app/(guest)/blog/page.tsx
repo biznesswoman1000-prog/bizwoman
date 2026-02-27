@@ -8,6 +8,7 @@ import { BlogPost, BlogCategory } from "@/types";
 import { apiGet } from "@/lib/api";
 import { formatDate, truncate } from "@/lib/utils";
 import { ProductCardSkeleton } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -112,10 +113,12 @@ export default function BlogPage() {
             >
               <div className="aspect-video bg-gray-100 overflow-hidden">
                 {post.featuredImage ? (
-                  <img
+                  <Image
                     src={post.featuredImage}
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    width={600}
+                    height={400}
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-brand-50 to-brand-100 flex items-center justify-center">

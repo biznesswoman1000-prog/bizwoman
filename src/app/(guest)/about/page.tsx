@@ -12,6 +12,8 @@ import {
   Globe,
   CheckCircle,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const iconMap: Record<string, any> = {
   target: Target,
@@ -78,10 +80,12 @@ export default function AboutUsPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               {settings.aboutUsImage && (
                 <div className="order-2 lg:order-1">
-                  <img
+                  <Image
                     src={settings.aboutUsImage}
                     alt="About Us"
                     className="w-full rounded-2xl shadow-xl"
+                    width={600}
+                    height={400}
                   />
                 </div>
               )}
@@ -205,10 +209,12 @@ export default function AboutUsPage() {
                 >
                   {member.image && (
                     <div className="aspect-square bg-gray-100">
-                      <img
+                      <Image
                         src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover"
+                        width={400}
+                        height={400}
                       />
                     </div>
                   )}
@@ -240,18 +246,18 @@ export default function AboutUsPage() {
             Let's discuss how we can help your business grow
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/contact"
               className="px-8 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors"
             >
               Contact Us
-            </a>
-            <a
+            </Link>
+            <Link
               href="/products"
               className="px-8 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
             >
               Browse Products
-            </a>
+            </Link>
           </div>
         </div>
       </section>

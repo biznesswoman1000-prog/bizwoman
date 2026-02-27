@@ -16,6 +16,7 @@ import {
   getProductImage,
 } from "@/lib/utils";
 import { PageLoader, ErrorState } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 export default function OrderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -145,10 +146,12 @@ export default function OrderDetailPage() {
         <div className="space-y-4">
           {order.items.map((item) => (
             <div key={item.id} className="flex gap-4">
-              <img
+              <Image
                 src={getProductImage(item.product.images)}
                 alt={item.product.name}
                 className="w-16 h-16 rounded-xl object-cover border border-gray-100 shrink-0"
+                width={64}
+                height={64}
               />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-gray-900 text-sm">

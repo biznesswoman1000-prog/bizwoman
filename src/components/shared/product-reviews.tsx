@@ -16,6 +16,8 @@ import { useAuthStore } from "@/store/authStore";
 import { useToast } from "@/store/uiStore";
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 interface ReviewUser {
@@ -133,10 +135,12 @@ function ReviewCard({
             {/* Avatar */}
             <div className="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-sm font-bold text-brand-700 shrink-0">
               {review.user.image ? (
-                <img
+                <Image
                   src={review.user.image}
                   alt={review.user.name}
                   className="w-full h-full rounded-full object-cover"
+                  width={36}
+                  height={36}
                 />
               ) : (
                 review.user.name.charAt(0).toUpperCase()
@@ -197,10 +201,12 @@ function ReviewCard({
                   onClick={() => setLightboxSrc(img)}
                   className="w-16 h-16 rounded-lg overflow-hidden border border-gray-100 hover:border-brand-300 transition-colors"
                 >
-                  <img
+                  <Image
                     src={img}
                     alt={`Review image ${i + 1}`}
                     className="w-full h-full object-cover"
+                    width={64}
+                    height={64}
                   />
                 </button>
               ))}
@@ -218,10 +224,12 @@ function ReviewCard({
           <button className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-lg">
             <X className="w-6 h-6" />
           </button>
-          <img
+          <Image
             src={lightboxSrc}
             alt="Review"
             className="max-w-full max-h-[90vh] rounded-xl"
+            width={800}
+            height={600}
           />
         </div>
       )}
@@ -445,12 +453,12 @@ export function ProductReviews({ productId }: { productId: string }) {
       ) : (
         <div className="bg-brand-50 rounded-2xl p-4 text-center">
           <p className="text-sm text-gray-600">
-            <a
+            <Link
               href="/login"
               className="text-brand-600 font-medium hover:underline"
             >
               Sign in
-            </a>{" "}
+            </Link>{" "}
             to leave a review
           </p>
         </div>

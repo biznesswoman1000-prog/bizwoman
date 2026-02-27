@@ -14,6 +14,7 @@ import {
 } from "@/components/shared/loading-spinner";
 import { useToast } from "@/store/uiStore";
 import { ImportExportModal } from "@/components/admin/products/import-export-modal";
+import Image from "next/image";
 
 const stockColors: Record<string, string> = {
   IN_STOCK: "bg-green-100 text-green-700",
@@ -162,13 +163,15 @@ export default function AdminProductsPage() {
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <img
+                        <Image
                           src={
                             product.images[0] ||
                             "/images/placeholder-product.png"
                           }
                           alt={product.name}
                           className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+                          width={40}
+                          height={40}
                         />
                         <div>
                           <p className="font-medium text-gray-900 line-clamp-1">

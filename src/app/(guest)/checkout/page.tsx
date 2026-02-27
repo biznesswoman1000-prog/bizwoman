@@ -26,6 +26,7 @@ import {
   NIGERIAN_STATES,
   calculateTotalWeight,
 } from "@/lib/utils";
+import Image from "next/image";
 
 const checkoutSchema = z.object({
   customerName: z.string().min(1, "Name is required"),
@@ -769,13 +770,15 @@ export default function CheckoutPage() {
                 <div className="space-y-3 mb-6">
                   {items.map((item) => (
                     <div key={item.id} className="flex items-center gap-3">
-                      <img
+                      <Image
                         src={
                           item.product.images[0] ||
                           "/images/placeholder-product.png"
                         }
                         alt={item.product.name}
                         className="w-16 h-16 rounded-lg object-cover border border-gray-100"
+                        width={64}
+                        height={64}
                       />
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-900">

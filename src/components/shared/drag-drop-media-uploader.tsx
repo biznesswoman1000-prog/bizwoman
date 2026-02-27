@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { apiUpload, apiDelete, getApiError } from "@/lib/api";
 import { useToast } from "@/store/uiStore";
+import Image from "next/image";
 
 interface MediaItem {
   url: string;
@@ -290,11 +291,13 @@ export function DragDropMediaUploader({
                   </div>
                 </div>
               ) : (
-                <img
+                <Image
                   src={item.url}
                   alt={`Preview ${index + 1}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
+                  width={500}
+                  height={500}
                 />
               )}
             </div>

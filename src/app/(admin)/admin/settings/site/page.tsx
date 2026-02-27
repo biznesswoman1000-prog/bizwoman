@@ -12,6 +12,7 @@ import { Save, Loader2, Upload, X, Info } from "lucide-react";
 import { apiGet, apiPut, apiUpload, getApiError } from "@/lib/api";
 import { useToast } from "@/store/uiStore";
 import { PageLoader } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 // ── Image spec hint ───────────────────────────────────────────────────────────
 function SpecHint({

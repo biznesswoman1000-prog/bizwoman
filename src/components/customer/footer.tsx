@@ -116,7 +116,7 @@ export function Footer() {
             {socialLinks.length > 0 && (
               <div className="flex items-center gap-3">
                 {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <a
+                  <Link
                     key={label}
                     href={href}
                     target="_blank"
@@ -125,7 +125,7 @@ export function Footer() {
                     className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 transition-colors"
                   >
                     <Icon className="w-4 h-4" />
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
@@ -193,23 +193,23 @@ export function Footer() {
               {settings.phone && (
                 <li className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-gold-400 shrink-0" />
-                  <a
+                  <Link
                     href={`tel:${settings.phone}`}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     {settings.phone}
-                  </a>
+                  </Link>
                 </li>
               )}
               {settings.email && (
                 <li className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-gold-400 shrink-0" />
-                  <a
+                  <Link
                     href={`mailto:${settings.email}`}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     {settings.email}
-                  </a>
+                  </Link>
                 </li>
               )}
             </ul>
@@ -245,14 +245,14 @@ export function Footer() {
             <span className="hidden sm:inline text-gray-700">•</span>
             <p>
               Developed by{" "}
-              <a
+              <Link
                 href="https://calstins.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-400 hover:text-brand-300 transition-colors font-medium"
               >
                 Calstins Ltd
-              </a>
+              </Link>
             </p>
           </div>
           <div className="flex items-center gap-4">

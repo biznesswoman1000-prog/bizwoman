@@ -23,6 +23,7 @@ import {
 } from "@/lib/utils";
 import { PageLoader, ErrorState } from "@/components/shared/loading-spinner";
 import { ProductReviews } from "@/components/shared/product-reviews";
+import Image from "next/image";
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -78,10 +79,12 @@ export default function ProductDetailPage() {
           {/* Images */}
           <div className="space-y-4">
             <div className="aspect-square rounded-2xl overflow-hidden border border-gray-100 bg-gray-50">
-              <img
+              <Image
                 src={getProductImage(product.images, selectedImage)}
                 alt={product.name}
                 className="w-full h-full object-cover"
+                width={600}
+                height={600}
               />
             </div>
             {product.images.length > 1 && (
@@ -96,10 +99,12 @@ export default function ProductDetailPage() {
                         : "border-gray-100 hover:border-gray-300"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`${product.name} ${i + 1}`}
                       className="w-full h-full object-cover"
+                      width={80}
+                      height={80}
                     />
                   </button>
                 ))}

@@ -15,6 +15,7 @@ import {
 } from "@/lib/utils";
 import { PageLoader, ErrorState } from "@/components/shared/loading-spinner";
 import { useToast } from "@/store/uiStore";
+import Image from "next/image";
 
 const segmentOptions = ["NEW", "REGULAR", "VIP", "WHOLESALE"];
 
@@ -79,10 +80,12 @@ export default function CustomerDetailPage() {
           <div className="bg-white rounded-2xl border border-gray-100 p-5">
             <div className="flex items-center gap-3 mb-4">
               {customer.image ? (
-                <img
+                <Image
                   src={customer.image}
                   alt={customer.name}
                   className="w-14 h-14 rounded-full object-cover"
+                  width={56}
+                  height={56}
                 />
               ) : (
                 <div className="w-14 h-14 rounded-full bg-brand-100 flex items-center justify-center text-xl font-bold text-brand-700">

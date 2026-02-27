@@ -9,6 +9,7 @@ import { BlogPost } from "@/types";
 import { apiGet } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import { PageLoader, ErrorState } from "@/components/shared/loading-spinner";
+import Image from "next/image";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -101,10 +102,12 @@ export default function BlogPostPage() {
 
       {post.featuredImage && (
         <div className="mt-6 rounded-2xl overflow-hidden aspect-video">
-          <img
+          <Image
             src={post.featuredImage}
             alt={post.title}
             className="w-full h-full object-cover"
+            width={1200}
+            height={675}
           />
         </div>
       )}
@@ -146,10 +149,12 @@ export default function BlogPostPage() {
                 className="group flex gap-3 bg-white rounded-xl border border-gray-100 p-4 hover:border-brand-200 hover:shadow-sm transition-all"
               >
                 {p.featuredImage ? (
-                  <img
+                  <Image
                     src={p.featuredImage}
                     alt={p.title}
                     className="w-16 h-16 rounded-lg object-cover shrink-0"
+                    width={64}
+                    height={64}
                   />
                 ) : (
                   <div className="w-16 h-16 rounded-lg bg-brand-50 flex items-center justify-center shrink-0">

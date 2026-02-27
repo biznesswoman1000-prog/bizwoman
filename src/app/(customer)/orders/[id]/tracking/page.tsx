@@ -6,6 +6,7 @@ import { Package, Truck, CheckCircle, MapPin, Clock } from "lucide-react";
 import { apiGet, getApiError } from "@/lib/api";
 import { useToast } from "@/store/uiStore";
 import { formatDateTime } from "@/lib/utils";
+import Link from "next/link";
 
 interface TrackingUpdate {
   id: string;
@@ -186,14 +187,14 @@ export default function OrderTrackingPage() {
       {/* External Tracking Link */}
       {order.trackingUrl && (
         <div className="mt-6">
-          <a
+          <Link
             href={order.trackingUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center px-6 py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-700 transition-colors"
           >
             Track with Carrier →
-          </a>
+          </Link>
         </div>
       )}
     </div>

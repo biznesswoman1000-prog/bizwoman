@@ -12,6 +12,7 @@ import {
 } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
+import Image from "next/image";
 
 interface ProductCardProps {
   product: Product;
@@ -44,11 +45,13 @@ export function ProductCard({ product, className }: ProductCardProps) {
     >
       {/* ── Image ── */}
       <div className="relative overflow-hidden aspect-square bg-gray-50">
-        <img
+        <Image
           src={getProductImage(product.images)}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          width={500}
+          height={500}
         />
 
         {/* Badges */}
