@@ -25,6 +25,7 @@ const eslintConfig = [
       "@typescript-eslint/no-explicit-any": "off",
       "no-unused-expressions": "off",
       "@typescript-eslint/no-unused-expressions": "off",
+      "react/no-unescaped-entities": "warn",
     },
   },
   {
