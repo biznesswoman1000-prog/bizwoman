@@ -457,7 +457,7 @@ export interface BlogCategory {
 }
 
 // ============================================
-// DASHBOARD & ANALYTICS TYPES
+// DASHBOARD & ANALYTICS TYPES.
 // ============================================
 
 export interface DashboardStats {
