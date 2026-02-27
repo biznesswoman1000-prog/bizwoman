@@ -294,6 +294,9 @@ export interface Brand {
   website?: string;
   isActive: boolean;
   productCount?: number;
+  _count?: {
+    products: number;
+  };
   createdAt: string;
   updatedAt: string;
 }

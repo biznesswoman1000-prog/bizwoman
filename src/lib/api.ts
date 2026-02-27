@@ -1,4 +1,4 @@
-// src/lib/api.ts
+// // frontend/src/lib/api.ts
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
