@@ -188,6 +188,27 @@ export interface Cart {
 // ORDER TYPES
 // ============================================
 
+export interface OrderStatusHistory {
+  id: string;
+  orderId: string;
+  status: OrderStatus;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface OrderShippingAddress {
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+  phone?: string;
+}
+
 export type OrderStatus =
   | "PENDING"
   | "CONFIRMED"
@@ -214,11 +235,13 @@ export interface Order {
   tax: number;
   total: number;
   items: OrderItem[];
-  shippingAddress?: Address;
+  shippingAddress?: OrderShippingAddress;
   trackingNumber?: string;
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  paymentReference?: string;
+  statusHistory?: OrderStatusHistory[];
 }
 
 export interface OrderItem {
