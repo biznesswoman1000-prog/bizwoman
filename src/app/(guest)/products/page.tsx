@@ -1,9 +1,9 @@
 //frontend/src/app/(guest)/products/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Loader2 } from "lucide-react";
 import { ProductCard } from "@/components/customer/product-card";
 import {
   ProductCardSkeleton,
@@ -14,7 +14,7 @@ import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
 
 const sortOptions = [
-  { value: "random", label: "Random" }, // ✅ NEW: Random option
+  { value: "random", label: "Random" },
   { value: "newest", label: "Newest First" },
   { value: "popular", label: "Most Popular" },
   { value: "price-asc", label: "Price: Low to High" },
@@ -22,12 +22,12 @@ const sortOptions = [
   { value: "name-asc", label: "Name A–Z" },
 ];
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const { categories } = useCategories();
 
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [sort, setSort] = useState(searchParams.get("sort") || "random"); // ✅ Default to random
+  const [sort, setSort] = useState(searchParams.get("sort") || "random");
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [categoryId, setCategoryId] = useState(
     searchParams.get("categoryId") || "",
@@ -63,7 +63,7 @@ export default function ProductsPage() {
     setMinPrice("");
     setMaxPrice("");
     setInStock(false);
-    setSort("random"); // ✅ Reset to random
+    setSort("random");
     setPage(1);
   };
 
@@ -72,7 +72,6 @@ export default function ProductsPage() {
 
   return (
     <div className="container py-8 lg:py-12">
-      {/* Page header */}
       <div className="mb-6">
         <h1 className="font-display text-2xl lg:text-3xl font-bold text-gray-900">
           All Products
@@ -95,7 +94,6 @@ export default function ProductsPage() {
             className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
           />
         </form>
-
         <div className="flex gap-2">
           <select
             value={sort}
@@ -111,7 +109,6 @@ export default function ProductsPage() {
               </option>
             ))}
           </select>
-
           <button
             onClick={() => setFiltersOpen(!filtersOpen)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-300 transition-colors"
@@ -129,7 +126,6 @@ export default function ProductsPage() {
       {filtersOpen && (
         <div className="mb-6 p-4 rounded-xl border border-gray-200 bg-gray-50">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Category Filter */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
                 Category
@@ -147,7 +143,6 @@ export default function ProductsPage() {
                 ))}
               </select>
             </div>
-
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
                 Min Price (₦)
@@ -160,7 +155,6 @@ export default function ProductsPage() {
                 className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-brand-500"
               />
             </div>
-
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
                 Max Price (₦)
@@ -173,7 +167,6 @@ export default function ProductsPage() {
                 className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-brand-500"
               />
             </div>
-
             <div className="flex items-end">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -187,7 +180,6 @@ export default function ProductsPage() {
                 </span>
               </label>
             </div>
-
             <div className="flex items-end gap-2">
               <button
                 onClick={() => {
@@ -242,7 +234,6 @@ export default function ProductsPage() {
             />
           )}
 
-          {/* Pagination */}
           {pagination && pagination.totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
               <button
@@ -267,5 +258,27 @@ export default function ProductsPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container py-8 lg:py-12">
+          <div className="mb-6">
+            <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse mb-2" />
+            <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      }
+    >
+      <ProductsContent />
+    </Suspense>
   );
 }
