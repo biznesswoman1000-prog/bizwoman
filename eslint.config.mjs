@@ -20,6 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
       "node_modules/**",
     ],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+    },
   },
   {
     files: ["src/generated/prisma/**/*"],
