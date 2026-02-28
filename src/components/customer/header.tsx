@@ -1,4 +1,3 @@
-//frontend/src/components/customer/header.tsx
 "use client";
 
 import Link from "next/link";
@@ -22,7 +21,6 @@ import { apiGet } from "@/lib/api";
 import { Category, Product } from "@/types";
 import Image from "next/image";
 
-// ─── types ────────────────────────────────────────────────────
 interface SiteSettings {
   logo?: string;
   siteName?: string;
@@ -30,7 +28,6 @@ interface SiteSettings {
   showHeaderBanner?: boolean;
 }
 
-// ─── debounce ────────────────────────────────────────────────
 function useDebounce<T>(value: T, delay: number): T {
   const [dv, setDv] = useState(value);
   useEffect(() => {
@@ -40,7 +37,6 @@ function useDebounce<T>(value: T, delay: number): T {
   return dv;
 }
 
-// ─── Search Dropdown ─────────────────────────────────────────
 function SearchDropdown({
   query,
   onNavigate,
@@ -98,7 +94,7 @@ function SearchDropdown({
               <button
                 key={product.id}
                 onMouseDown={(e) => {
-                  e.preventDefault(); // keep focus on input so blur doesn't fire first
+                  e.preventDefault();
                   router.push(`/products/${product.slug}`);
                   onNavigate();
                 }}
@@ -131,8 +127,6 @@ function SearchDropdown({
               </button>
             ))}
           </div>
-
-          {/* See more */}
           <div className="border-t border-gray-100 p-3">
             <button
               onMouseDown={(e) => {
@@ -152,7 +146,6 @@ function SearchDropdown({
   );
 }
 
-// ─── Category Bar ─────────────────────────────────────────────
 function CategoryBar({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const searchParams =
@@ -160,9 +153,7 @@ function CategoryBar({ categories }: { categories: Category[] }) {
       ? new URLSearchParams(window.location.search)
       : null;
   const activeCatId = searchParams?.get("categoryId") ?? "";
-
   if (!categories.length) return null;
-
   return (
     <div className="border-t border-gray-100 bg-white/95 backdrop-blur-sm">
       <div className="container">
@@ -170,7 +161,6 @@ function CategoryBar({ categories }: { categories: Category[] }) {
           className="flex items-center gap-1.5 overflow-x-auto py-2.5"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {/* All Products pill */}
           <button
             onClick={() => router.push("/products")}
             className={cn(
@@ -182,10 +172,7 @@ function CategoryBar({ categories }: { categories: Category[] }) {
           >
             All Products
           </button>
-
-          {/* Category divider */}
           <span className="shrink-0 w-px h-4 bg-gray-200 mx-1" />
-
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -206,34 +193,31 @@ function CategoryBar({ categories }: { categories: Category[] }) {
   );
 }
 
-// ─── Main Header ─────────────────────────────────────────────
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [settings, setSettings] = useState<SiteSettings>({});
   const [categories, setCategories] = useState<Category[]>([]);
-
-  // Search
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const debouncedQuery = useDebounce(query, 280);
   const searchWrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Stores
   const itemCount = useCartStore((s) => s.itemCount);
   const toggleCart = useCartStore((s) => s.toggleCart);
   const wishlistCount = useWishlistStore((s) => s.itemCount);
-  const fetchWishlist = useWishlistStore((s) => s.fetchWishlist);
-  const { user, isAuthenticated, checkAuth } = useAuthStore();
 
-  // ── boot ──
+  // Subscribe to individual primitives to avoid unnecessary re-renders
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const checkAuth = useAuthStore((s) => s.checkAuth);
+  const user = useAuthStore((s) => s.user);
+
   useEffect(() => {
     apiGet<any>("/settings")
       .then((r) => setSettings(r.data.settings ?? {}))
       .catch(() => {});
-
     apiGet<{ success: boolean; data: { categories: Category[] } }>(
       "/categories",
     )
@@ -255,24 +239,26 @@ export function Header() {
   }, [checkAuth]);
 
   useEffect(() => {
-    if (isAuthenticated) fetchWishlist();
-  }, [isAuthenticated, fetchWishlist]);
+    checkAuth();
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") checkAuth();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [checkAuth]);
 
-  // close search on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (
         searchWrapRef.current &&
         !searchWrapRef.current.contains(e.target as Node)
-      ) {
+      )
         setSearchOpen(false);
-      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
@@ -281,7 +267,6 @@ export function Header() {
     setSearchOpen(false);
     setQuery("");
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim().length >= 3) {
@@ -295,19 +280,15 @@ export function Header() {
 
   return (
     <>
-      {/* Announcement Banner */}
       {showBanner && (
         <div className="bg-brand-600 text-white text-center py-2 px-4 text-sm font-medium">
           {settings.headerBanner}
         </div>
       )}
-
       <header className="sticky top-0 z-50 bg-white shadow-sm">
-        {/* ── Main row ─────────────────────────────────────── */}
         <div className="border-b border-gray-100">
           <div className="container">
             <div className="flex items-center gap-4 h-16 lg:h-[72px]">
-              {/* Logo */}
               <Link href="/" className="shrink-0">
                 {settings.logo ? (
                   <Image
@@ -324,7 +305,6 @@ export function Header() {
                 )}
               </Link>
 
-              {/* ── Search bar (desktop) ── */}
               <div
                 ref={searchWrapRef}
                 className="flex-1 relative hidden md:block max-w-xl lg:max-w-2xl mx-auto"
@@ -367,16 +347,12 @@ export function Header() {
                     )}
                   </div>
                 </form>
-
-                {/* Dropdown results */}
                 {searchOpen && debouncedQuery.length >= 3 && (
                   <SearchDropdown
                     query={debouncedQuery}
                     onNavigate={closeSearch}
                   />
                 )}
-
-                {/* Hint when typing but < 3 chars */}
                 {searchOpen && query.length > 0 && query.length < 3 && (
                   <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-2xl shadow-xl border border-gray-100 px-4 py-3 z-[60]">
                     <p className="text-xs text-gray-400">
@@ -387,9 +363,7 @@ export function Header() {
                 )}
               </div>
 
-              {/* ── Right actions ── */}
               <div className="flex items-center shrink-0 ml-auto gap-1">
-                {/* Mobile search trigger */}
                 <button
                   onClick={() => {
                     setMobileOpen(false);
@@ -402,7 +376,6 @@ export function Header() {
                   <Search className="w-5 h-5" />
                 </button>
 
-                {/* Wishlist */}
                 <Link
                   href="/wishlist"
                   className="relative p-2 rounded-xl text-gray-500 hover:text-brand-700 hover:bg-gray-50 transition-colors"
@@ -421,7 +394,6 @@ export function Header() {
                   )}
                 </Link>
 
-                {/* Cart */}
                 <button
                   onClick={toggleCart}
                   className="relative p-2 rounded-xl text-gray-500 hover:text-brand-700 hover:bg-gray-50 transition-colors"
@@ -435,7 +407,6 @@ export function Header() {
                   )}
                 </button>
 
-                {/* Auth — desktop */}
                 {isAuthenticated && user ? (
                   <Link
                     href="/account"
@@ -470,7 +441,6 @@ export function Header() {
                   </Link>
                 )}
 
-                {/* Mobile hamburger */}
                 <button
                   onClick={() => setMobileOpen((o) => !o)}
                   className="lg:hidden p-2 rounded-xl text-gray-500 hover:text-brand-700 hover:bg-gray-50 transition-colors"
@@ -487,13 +457,10 @@ export function Header() {
           </div>
         </div>
 
-        {/* ── Category Bar ─────────────────────────────────── */}
         <CategoryBar categories={categories} />
 
-        {/* ── Mobile menu ──────────────────────────────────── */}
         {mobileOpen && (
           <div className="lg:hidden border-t border-gray-100 bg-white shadow-lg">
-            {/* Mobile search */}
             <div className="container pt-3 pb-2">
               <form
                 onSubmit={(e) => {
@@ -519,7 +486,6 @@ export function Header() {
                 </div>
               </form>
             </div>
-
             <nav className="container pb-4 flex flex-col gap-1">
               <Link
                 href="/products"
@@ -532,7 +498,6 @@ export function Header() {
               >
                 All Products
               </Link>
-
               {categories.slice(0, 10).map((cat) => (
                 <button
                   key={cat.id}
@@ -545,7 +510,6 @@ export function Header() {
                   {cat.name}
                 </button>
               ))}
-
               <Link
                 href="/blog"
                 className="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
@@ -558,7 +522,6 @@ export function Header() {
               >
                 Contact
               </Link>
-
               <div className="border-t border-gray-100 mt-2 pt-2 space-y-1">
                 <Link
                   href="/wishlist"
@@ -577,7 +540,6 @@ export function Header() {
                     </span>
                   )}
                 </Link>
-
                 {isAuthenticated && user ? (
                   <Link
                     href="/account"

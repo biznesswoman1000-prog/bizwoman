@@ -1,10 +1,11 @@
-//frontend/src/store/authStore.ts
 "use client";
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { User, LoginPayload, RegisterPayload } from "@/types";
 import { apiPost, apiGet } from "@/lib/api";
+import { useWishlistStore } from "@/store/wishlistStore";
+import { useCartStore } from "@/store/cartStore";
 
 interface AuthState {
   user: User | null;
@@ -12,7 +13,6 @@ interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
 
-  // Actions
   login: (payload: LoginPayload) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
@@ -42,17 +42,10 @@ export const useAuthStore = create<AuthState>()(
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
 
-          // ✅ Set state immediately with user data
-          set({
-            user,
-            accessToken,
-            isAuthenticated: true,
-            isLoading: false,
-          });
+          set({ user, accessToken, isAuthenticated: true, isLoading: false });
 
-          // ✅ Force persist to localStorage/cookies immediately
-          // This ensures middleware can read the updated state
-          await new Promise((resolve) => setTimeout(resolve, 100));
+          // ✅ Load wishlist immediately after login — token is already in localStorage
+          useWishlistStore.getState().fetchWishlist();
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -75,6 +68,12 @@ export const useAuthStore = create<AuthState>()(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         set({ user: null, accessToken: null, isAuthenticated: false });
+        // ✅ Clear wishlist and cart on logout
+        useWishlistStore.setState({
+          items: [],
+          productIds: new Set(),
+          itemCount: 0,
+        });
       },
 
       setUser: (user) => set({ user, isAuthenticated: true }),
@@ -90,7 +89,8 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      // ✅ Check authentication status with backend
+      // ✅ checkAuth now fetches wishlist itself after confirming auth
+      // This ensures token is valid and in localStorage BEFORE wishlist fetches
       checkAuth: async () => {
         const token = localStorage.getItem("accessToken");
 
@@ -99,20 +99,24 @@ export const useAuthStore = create<AuthState>()(
           return;
         }
 
+        const wasAuthenticated = get().isAuthenticated;
+
         try {
-          // ✅ Always fetch fresh user data from backend
           const res = await apiGet<{ success: boolean; data: { user: User } }>(
             "/auth/me",
           );
-
-          // ✅ Update stored user with fresh data
           set({
             user: res.data.user,
             accessToken: token,
             isAuthenticated: true,
           });
-        } catch (error) {
-          // Token is invalid or expired, clear everything
+
+          // ✅ Only fetch wishlist if we weren't already authenticated
+          // (avoids re-fetching on every visibility change if already loaded)
+          if (!wasAuthenticated) {
+            useWishlistStore.getState().fetchWishlist();
+          }
+        } catch {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           set({ user: null, accessToken: null, isAuthenticated: false });
@@ -131,7 +135,6 @@ export const useAuthStore = create<AuthState>()(
   ),
 );
 
-// Convenience selectors
 export const useUser = () => useAuthStore((s) => s.user);
 export const useIsAuthenticated = () => useAuthStore((s) => s.isAuthenticated);
 export const useIsAdmin = () => {

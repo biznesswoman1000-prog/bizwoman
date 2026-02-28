@@ -150,10 +150,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
           )}
         </div>
 
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
           <Link
             href={`/products/${product.slug}`}
-            className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-center border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
+            className="w-full py-2.5 rounded-xl text-sm font-semibold text-center border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
           >
             Details
           </Link>
@@ -161,7 +161,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             onClick={() => !isOutOfStock && addToCart(product.id)}
             disabled={isOutOfStock || cartLoading}
             className={cn(
-              "flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors",
+              "w-full py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors",
               isOutOfStock
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                 : "bg-brand-600 text-white hover:bg-brand-700",
