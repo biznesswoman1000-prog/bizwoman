@@ -85,9 +85,6 @@ function HeroInner({
 }) {
   const [cur, setCur] = useState(0);
   const [transitioning, setTr] = useState(false);
-  // ✅ FIX: useRef<HTMLVideoElement | null>(null) → MutableRefObject<HTMLVideoElement | null>
-  //    The old code typed videoRef as RefObject<HTMLVideoElement> (non-null) which
-  //    React 19 rejects because useRef(null) always produces | null.
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
