@@ -57,7 +57,7 @@ export function Footer() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const siteName = settings.siteName || "EquipUniverse";
+  const siteName = settings.siteName || "Super Business Woman";
   const socialLinks = [
     {
       icon: Facebook,

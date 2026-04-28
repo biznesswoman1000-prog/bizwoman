@@ -51,7 +51,7 @@ export default function RegisterPage() {
             Create account
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Join EquipUniverse and start shopping
+            Join Super Business Woman and start shopping
           </p>
         </div>
 

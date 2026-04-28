@@ -96,7 +96,7 @@ export default function AdminSmsSettingsPage() {
               <input
                 value={settings.smsSenderId || ""}
                 onChange={(e) => s("smsSenderId", e.target.value)}
-                placeholder="EquipUniverse"
+                placeholder="Super Business Woman"
                 className={inputCls}
               />
             </div>

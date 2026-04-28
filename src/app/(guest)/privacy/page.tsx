@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/utils";
 
 const DEFAULT_PRIVACY_CONTENT = `
 <h2>Introduction</h2>
-<p>EquipUniverse ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase from us.</p>
+<p>Super Business Woman ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase from us.</p>
 
 <h2>Information We Collect</h2>
 <h3>Personal Information</h3>
@@ -72,7 +72,7 @@ const DEFAULT_PRIVACY_CONTENT = `
 
 <h2>Contact Us</h2>
 <p>If you have questions about this Privacy Policy, please contact us at:</p>
-<p>Email: privacy@EquipUniverse.com<br>Phone: +234 XXX XXX XXXX<br>Address: Lagos, Nigeria</p>
+<p>Email: privacy@Super Business Woman.com<br>Phone: +234 XXX XXX XXXX<br>Address: Lagos, Nigeria</p>
 `;
 
 export default function PrivacyPage() {

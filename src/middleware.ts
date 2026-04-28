@@ -1,30 +1,33 @@
-// middleware.ts - Simplified version
+// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Only protect guest-only routes in middleware
-// Let client-side layouts handle auth checks for better reliability
+// Routes that logged-in users should NOT be able to access
 const GUEST_ONLY_ROUTES = [
   "/login",
   "/register",
   "/forgot-password",
   "/reset-password",
   "/verify-email",
-  "/products",
 ];
 
+/**
+ * ✅ SESSION PERSISTENCE: Reads the `sbw-auth` cookie that authStore writes
+ * via syncAuthCookie() on every auth state change and on Zustand rehydration.
+ *
+ * The cookie carries a minimal JSON snapshot:
+ *   { isAuthenticated: true, user: { id, role } }
+ *
+ * This lets the middleware make auth decisions server-side without access to
+ * the httpOnly JWT cookies or localStorage (neither is readable in middleware).
+ */
 function isAuthenticated(req: NextRequest): boolean {
   try {
     const authCookie = req.cookies.get("sbw-auth");
 
-    if (!authCookie?.value) {
-      return false;
-    }
+    if (!authCookie?.value) return false;
 
-    const decodedValue = decodeURIComponent(authCookie.value);
-    const auth = JSON.parse(decodedValue);
-    const state = auth?.state || auth;
-
+    const state = JSON.parse(decodeURIComponent(authCookie.value));
     return !!state?.isAuthenticated && !!state?.user;
   } catch {
     return false;

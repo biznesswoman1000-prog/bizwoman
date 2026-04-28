@@ -9,6 +9,17 @@ import { useRouter } from "next/navigation";
 import { LoginPayload, RegisterPayload } from "@/types";
 import axios from "axios";
 
+const AUTH_COOKIE = "auth-token";
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+
+function setAuthCookie() {
+  document.cookie = `${AUTH_COOKIE}=1; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+function clearAuthCookie() {
+  document.cookie = `${AUTH_COOKIE}=; path=/; max-age=0; SameSite=Lax`;
+}
+
 export function useAuth() {
   const store = useAuthStore();
   const toast = useToast();
@@ -17,39 +28,36 @@ export function useAuth() {
 
   const login = async (payload: LoginPayload, redirectTo = "/") => {
     try {
-      // 1. Call login API
+      // 1. Call login API — stores token in localStorage & Zustand
       await store.login(payload);
 
-      // 2. Wait a bit for state to persist to cookie
+      // 2. Set a lightweight cookie the middleware can read on the next request
+      setAuthCookie();
+
+      // 3. Small wait to ensure Zustand persist writes to localStorage
       await new Promise((resolve) => setTimeout(resolve, 150));
 
-      // 3. Verify we have the user data
       const currentUser = useAuthStore.getState().user;
-      const currentAuth = useAuthStore.getState().isAuthenticated;
-
       console.log("✅ Login successful:", {
         email: currentUser?.email,
         role: currentUser?.role,
-        isAuthenticated: currentAuth,
       });
 
-      // 4. Merge cart items
+      // 4. Merge guest cart into user cart
       await mergeCart();
 
-      // 5. Show success message
+      // 5. Confirm to user
       toast("Welcome back!", "success");
 
-      // 6. Force a hard navigation to ensure middleware reads fresh state
-      // Using window.location instead of router.push ensures a full page load
+      // 6. Hard navigate so middleware reads the fresh cookie
       window.location.href = redirectTo;
     } catch (error) {
       console.error("Login failed:", error);
-
-      // Don't show toast for validation errors (400) - let form handle it
+      // Only show toast for non-validation errors (400s are shown by the form)
       if (!axios.isAxiosError(error) || error.response?.status !== 400) {
         toast(getApiError(error), "error");
       }
-      throw error; // Re-throw so form can catch it
+      throw error;
     }
   };
 
@@ -59,16 +67,16 @@ export function useAuth() {
       toast("Account created! Please check your email to verify.", "success");
       router.push("/login");
     } catch (error) {
-      // Don't show toast for validation errors (400) - let form handle it
       if (!axios.isAxiosError(error) || error.response?.status !== 400) {
         toast(getApiError(error), "error");
       }
-      throw error; // Re-throw so form can catch it
+      throw error;
     }
   };
 
   const logout = async () => {
     await store.logout();
+    clearAuthCookie();
     toast("Logged out successfully", "default");
     window.location.href = "/";
   };

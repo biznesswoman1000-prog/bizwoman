@@ -112,7 +112,7 @@ export default function AdminEmailSettingsPage() {
               <input
                 value={settings.fromName || ""}
                 onChange={(e) => s("fromName", e.target.value)}
-                placeholder="EquipUniverse"
+                placeholder="Super Business Woman"
                 className={inputCls}
               />
             </div>
@@ -124,7 +124,7 @@ export default function AdminEmailSettingsPage() {
                 type="email"
                 value={settings.fromEmail || ""}
                 onChange={(e) => s("fromEmail", e.target.value)}
-                placeholder="noreply@EquipUniverse.com"
+                placeholder="noreply@Super Business Woman.com"
                 className={inputCls}
               />
             </div>

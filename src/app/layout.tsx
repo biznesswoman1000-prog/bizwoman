@@ -38,7 +38,7 @@ async function getSiteSettings() {
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
 
-  const siteName = s?.siteName || "EquipUniverse";
+  const siteName = s?.siteName || "Super Business Woman";
   const title = s?.metaTitle || siteName;
   const desc =
     s?.metaDescription ||

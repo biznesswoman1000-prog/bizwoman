@@ -267,7 +267,7 @@ export default function AdminSiteSettingsPage() {
               value={settings.siteName || ""}
               onChange={(e) => set("siteName", e.target.value)}
               className={inputCls}
-              placeholder="EquipUniverse"
+              placeholder="Super Business Woman"
               required
             />
           </div>
@@ -324,7 +324,7 @@ export default function AdminSiteSettingsPage() {
               value={settings.metaTitle || ""}
               onChange={(e) => set("metaTitle", e.target.value)}
               className={inputCls}
-              placeholder="Nigeria's #1 Business Equipment Store | EquipUniverse"
+              placeholder="Nigeria's #1 Business Equipment Store | Super Business Woman"
             />
             <p
               className={`mt-1 text-xs ${(settings.metaTitle || "").length > 60 ? "text-red-500" : "text-gray-400"}`}
@@ -404,6 +404,45 @@ export default function AdminSiteSettingsPage() {
             <span className="text-sm font-medium text-gray-700">
               Show announcement banner
             </span>
+          </label>
+        </div>
+
+        {/* ── Pricing Visibility ─────────────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
+          <h2 className="font-semibold text-gray-900">Pricing Visibility</h2>
+          <p className="text-sm text-gray-500">
+            When enabled, product prices are hidden across the store and replaced with a{" "}
+            <strong>"Request a Quote"</strong> button. Customers will submit a quote
+            request with their quantity, email, and message.
+          </p>
+
+          <label className="flex items-center gap-3 cursor-pointer">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={settings.hidePricing ?? false}
+                onChange={(e) => set("hidePricing", e.target.checked)}
+                className="sr-only"
+              />
+              <div
+                className={`w-11 h-6 rounded-full transition-colors ${
+                  settings.hidePricing ? "bg-brand-600" : "bg-gray-200"
+                }`}
+              />
+              <div
+                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                  settings.hidePricing ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </div>
+            <div>
+              <span className="text-sm font-medium text-gray-700">
+                Hide pricing — use "Request a Quote" instead
+              </span>
+              <p className="text-xs text-gray-400 mt-0.5">
+                All price displays will be replaced with a quote request form
+              </p>
+            </div>
           </label>
         </div>
 

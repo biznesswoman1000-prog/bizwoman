@@ -83,8 +83,8 @@ const navItems: NavItem[] = [
     label: "Shipping",
     icon: Truck,
     children: [
-      { label: "Shipping Zones", href: "/admin/shipping/zones" },
-      { label: "All Methods", href: "/admin/shipping/methods" },
+      { label: "Overview", href: "/admin/shipping" },
+      { label: "Zones & Methods", href: "/admin/shipping/zones" },
     ],
   },
   { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
@@ -111,7 +111,9 @@ function NavItemComponent({
   const pathname = usePathname();
   const isActive = item.href
     ? pathname === item.href
-    : item.children?.some((c) => pathname.startsWith(c.href));
+    : item.children?.some(
+        (c) => pathname === c.href || pathname.startsWith(c.href + "/"),
+      );
   const [expanded, setExpanded] = useState(isActive || false);
 
   if (item.children) {
@@ -145,7 +147,7 @@ function NavItemComponent({
                 onClick={onNavigate}
                 className={cn(
                   "block px-3 py-2 rounded-lg text-sm transition-colors",
-                  pathname === href
+                  pathname === href || pathname.startsWith(href + "/")
                     ? "bg-brand-50 text-brand-700 font-medium"
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-50",
                 )}
@@ -211,7 +213,9 @@ function Logo() {
           <Building2 className="w-4 h-4 text-white" />
         </div>
         <div>
-          <p className="text-sm font-bold text-gray-900">EquipUniverse</p>
+          <p className="text-sm font-bold text-gray-900">
+            Super Business Woman
+          </p>
           <p className="text-[11px] text-gray-400">Admin Panel</p>
         </div>
       </Link>
@@ -261,7 +265,9 @@ export function AdminSidebar() {
               <Building2 className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold text-gray-900">EquipUniverse</p>
+              <p className="text-sm font-bold text-gray-900">
+                Super Business Woman
+              </p>
               <p className="text-[11px] text-gray-400">Admin Panel</p>
             </div>
           </Link>

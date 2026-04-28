@@ -4,6 +4,7 @@
 import { Header } from "@/components/customer/header";
 import { Footer } from "@/components/customer/footer";
 import { CartDrawer } from "@/components/customer/cart/cart-drawer";
+import WhatsAppChat from "@/components/customer/whatsapp-chat";
 
 export default function GuestLayout({
   children,
@@ -16,6 +17,7 @@ export default function GuestLayout({
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
+      <WhatsAppChat />
     </div>
   );
 }

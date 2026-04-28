@@ -444,6 +444,9 @@ export interface SiteSettings {
   headerBanner?: string;
   showHeaderBanner?: boolean;
 
+  // Pricing visibility
+  hidePricing?: boolean;
+
   createdAt?: string;
   updatedAt?: string;
 }

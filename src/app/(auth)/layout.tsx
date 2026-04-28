@@ -23,7 +23,7 @@ export default function AuthLayout({
 
       {/* Footer */}
       <footer className="container py-5 text-center text-xs text-gray-400">
-        © {new Date().getFullYear()} EquipUniverse. All rights reserved.
+        © {new Date().getFullYear()} Super Business Woman. All rights reserved.
       </footer>
     </div>
   );

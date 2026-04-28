@@ -275,7 +275,7 @@ export function Header() {
     }
   };
 
-  const siteName = settings.siteName || "EquipUniverse";
+  const siteName = settings.siteName || "Super Business Woman";
   const showBanner = settings.showHeaderBanner && settings.headerBanner;
 
   return (

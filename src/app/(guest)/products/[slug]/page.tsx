@@ -13,9 +13,12 @@ import {
   Plus,
   Heart,
   Check,
+  FileQuestion,
 } from "lucide-react";
 import { useProduct } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
+import { useSettings } from "@/hooks/useSettings";
+import { RequestQuoteModal } from "@/components/shared/request-quote-modal";
 import {
   formatPrice,
   calculateDiscountPercent,
@@ -29,7 +32,9 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { product, isLoading, error } = useProduct(slug);
   const { addToCart, isLoading: cartLoading } = useCart();
+  const { settings } = useSettings();
 
+  const [quoteOpen, setQuoteOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<
@@ -50,7 +55,7 @@ export default function ProductDetailPage() {
   const isOutOfStock = product.stockStatus === "OUT_OF_STOCK";
   const maxQty = Math.min(product.stockQuantity, 99);
 
-  const metaTitle = product.metaTitle || `${product.name} | EquipUniverse`;
+  const metaTitle = product.metaTitle || `${product.name} | Super Business Woman`;
   const metaDescription =
     product.metaDescription ||
     product.shortDescription ||
@@ -148,22 +153,24 @@ export default function ProductDetailPage() {
               </button>
             )}
 
-            {/* Price */}
-            <div className="flex items-center gap-3 mt-4">
-              <span className="text-3xl font-bold text-brand-700">
-                {formatPrice(product.price)}
-              </span>
-              {product.comparePrice && product.comparePrice > product.price && (
-                <>
-                  <span className="text-xl text-gray-400 line-through">
-                    {formatPrice(product.comparePrice)}
-                  </span>
-                  <span className="px-2.5 py-0.5 bg-red-100 text-red-700 text-sm font-bold rounded-full">
-                    -{discount}%
-                  </span>
-                </>
-              )}
-            </div>
+            {/* Price — hidden when hidePricing is on */}
+            {!settings.hidePricing && (
+              <div className="flex items-center gap-3 mt-4">
+                <span className="text-3xl font-bold text-brand-700">
+                  {formatPrice(product.price)}
+                </span>
+                {product.comparePrice && product.comparePrice > product.price && (
+                  <>
+                    <span className="text-xl text-gray-400 line-through">
+                      {formatPrice(product.comparePrice)}
+                    </span>
+                    <span className="px-2.5 py-0.5 bg-red-100 text-red-700 text-sm font-bold rounded-full">
+                      -{discount}%
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
 
             {product.shortDescription && (
               <p className="mt-4 text-gray-600 leading-relaxed">
@@ -210,8 +217,10 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {!isOutOfStock && (
+            {/* CTA — quote mode or cart mode */}
+            {settings.hidePricing ? (
               <div className="mt-6 flex items-center gap-3">
+                {/* Quantity picker still visible so user can specify qty in the quote */}
                 <div className="flex items-center border border-gray-200 rounded-xl">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -224,27 +233,59 @@ export default function ProductDetailPage() {
                     {quantity}
                   </span>
                   <button
-                    onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
+                    onClick={() => setQuantity(Math.min(99, quantity + 1))}
                     className="px-3 py-3 text-gray-500 hover:text-gray-900 disabled:opacity-40 transition-colors"
-                    disabled={quantity >= maxQty}
+                    disabled={quantity >= 99}
                   >
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
                 <button
-                  onClick={() => addToCart(product.id, quantity)}
-                  disabled={cartLoading}
-                  className="flex-1 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors"
+                  onClick={() => setQuoteOpen(true)}
+                  className="flex-1 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 flex items-center justify-center gap-2 transition-colors"
                 >
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </button>
-
-                <button className="p-3.5 border border-gray-200 rounded-xl text-gray-500 hover:text-red-500 hover:border-red-200 transition-colors">
-                  <Heart className="w-5 h-5" />
+                  <FileQuestion className="w-5 h-5" />
+                  Request a Quote
                 </button>
               </div>
+            ) : (
+              !isOutOfStock && (
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex items-center border border-gray-200 rounded-xl">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-3 py-3 text-gray-500 hover:text-gray-900 disabled:opacity-40 transition-colors"
+                      disabled={quantity <= 1}
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="w-12 text-center font-semibold">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
+                      className="px-3 py-3 text-gray-500 hover:text-gray-900 disabled:opacity-40 transition-colors"
+                      disabled={quantity >= maxQty}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => addToCart(product.id, quantity)}
+                    disabled={cartLoading}
+                    className="flex-1 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </button>
+
+                  <button className="p-3.5 border border-gray-200 rounded-xl text-gray-500 hover:text-red-500 hover:border-red-200 transition-colors">
+                    <Heart className="w-5 h-5" />
+                  </button>
+                </div>
+              )
             )}
 
             {/* Trust badges */}
@@ -389,6 +430,15 @@ export default function ProductDetailPage() {
           )}
         </div>
       </div>
+
+      {/* Quote modal — rendered when hidePricing is active */}
+      <RequestQuoteModal
+        open={quoteOpen}
+        onClose={() => setQuoteOpen(false)}
+        productName={product.name}
+        productId={product.id}
+        initialQuantity={quantity}
+      />
     </>
   );
 }

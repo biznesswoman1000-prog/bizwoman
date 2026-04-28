@@ -7,11 +7,11 @@ import { formatDate } from "@/lib/utils";
 
 const DEFAULT_TERMS_CONTENT = `
 <h2>Agreement to Terms</h2>
-<p>By accessing and using EquipUniverse, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+<p>By accessing and using Super Business Woman, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
 
 <h2>Use of Our Service</h2>
 <h3>Eligibility</h3>
-<p>You must be at least 18 years old to use our services. By using EquipUniverse, you represent that you meet this age requirement.</p>
+<p>You must be at least 18 years old to use our services. By using Super Business Woman, you represent that you meet this age requirement.</p>
 
 <h3>Account Responsibilities</h3>
 <p>When you create an account, you agree to:</p>
@@ -69,7 +69,7 @@ const DEFAULT_TERMS_CONTENT = `
 <p>Approved refunds will be processed within 7-14 business days to the original payment method.</p>
 
 <h2>Intellectual Property</h2>
-<p>All content on EquipUniverse, including text, graphics, logos, and images, is the property of EquipUniverse and protected by copyright laws. You may not:</p>
+<p>All content on Super Business Woman, including text, graphics, logos, and images, is the property of Super Business Woman and protected by copyright laws. You may not:</p>
 <ul>
   <li>Reproduce or distribute our content without permission</li>
   <li>Use our trademarks or branding</li>
@@ -88,10 +88,10 @@ const DEFAULT_TERMS_CONTENT = `
 </ul>
 
 <h2>Limitation of Liability</h2>
-<p>EquipUniverse shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.</p>
+<p>Super Business Woman shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.</p>
 
 <h2>Indemnification</h2>
-<p>You agree to indemnify and hold EquipUniverse harmless from any claims, damages, or expenses arising from your violation of these terms or your use of our services.</p>
+<p>You agree to indemnify and hold Super Business Woman harmless from any claims, damages, or expenses arising from your violation of these terms or your use of our services.</p>
 
 <h2>Modifications to Terms</h2>
 <p>We reserve the right to modify these terms at any time. Continued use of our services after changes constitutes acceptance of the modified terms.</p>
@@ -101,7 +101,7 @@ const DEFAULT_TERMS_CONTENT = `
 
 <h2>Contact Information</h2>
 <p>For questions about these Terms of Service, contact us at:</p>
-<p>Email: legal@EquipUniverse.com<br>Phone: +234 XXX XXX XXXX<br>Address: Lagos, Nigeria</p>
+<p>Email: legal@Super Business Woman.com<br>Phone: +234 XXX XXX XXXX<br>Address: Lagos, Nigeria</p>
 `;
 
 export default function TermsPage() {

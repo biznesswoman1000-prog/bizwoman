@@ -833,7 +833,7 @@ export default function ProductForm({ productId, onSave }: Props) {
                 {form.metaTitle || form.name || "Product Title"}
               </p>
               <p className="text-green-700 text-xs">
-                EquipUniverse.com/products/{form.slug || "product-slug"}
+                Super Business Woman.com/products/{form.slug || "product-slug"}
               </p>
               <p className="text-gray-600 text-xs mt-0.5 line-clamp-2">
                 {form.metaDescription ||

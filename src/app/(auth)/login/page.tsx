@@ -38,7 +38,7 @@ function LoginForm() {
           Welcome back
         </h1>
         <p className="mt-2 text-sm text-gray-500">
-          Sign in to your EquipUniverse account
+          Sign in to your Super Business Woman account
         </p>
       </div>
 

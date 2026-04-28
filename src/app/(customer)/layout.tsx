@@ -8,7 +8,6 @@ import { PageLoader } from "@/components/shared/loading-spinner";
 import { Header } from "@/components/customer/header";
 import { Footer } from "@/components/customer/footer";
 import { CartDrawer } from "@/components/customer/cart/cart-drawer";
-import WhatsAppChat from "@/components/customer/whatsapp-chat";
 
 export default function AccountLayout({
   children,
@@ -65,7 +64,6 @@ export default function AccountLayout({
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1">{children}</main>
-      <WhatsAppChat />
       <Footer />
       <CartDrawer />
     </div>
