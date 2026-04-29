@@ -106,7 +106,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-4">
               <span className="font-display text-2xl font-bold text-white">
-                Super<span className="text-gold-400">BusinessWoman</span>
+                Super<span className="text-gold-400">Business</span><span className="text-brand-700">Woman</span>
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
