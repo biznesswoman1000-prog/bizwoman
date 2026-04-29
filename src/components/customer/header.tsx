@@ -300,7 +300,7 @@ export function Header() {
                   />
                 ) : (
                   <span className="font-display text-xl lg:text-2xl font-bold text-brand-700 tracking-tight">
-                    Equip<span className="text-gold-500">Universe</span>
+                    Super<span className="text-gold-500">BusinessWoman</span>
                   </span>
                 )}
               </Link>
